@@ -1,6 +1,6 @@
 # Objective
 
-Write a crawler for Megabus Canada that can extract:
+Write a crawler for BoltBus that can extract:
 * list of stops
 * list of routes
 * list of departures
@@ -9,15 +9,15 @@ Write a crawler for Megabus Canada that can extract:
 
 This process is done once to create a mapping between their stops and ours.
 
-From this [page](http://ca.megabus.com/BusStops.aspx), get the list of all bus stops including the address, latitude and longitude.  The output should be stored in a `stops.json` and the schema should be something like this:
+From this [page](http://bit.ly/1mbczAX), get the list of all bus stops including the address, latitude and longitude.  The output should be stored in a `stops.json` and the schema should be something like this:
 
 ```json
 [
 	{
-		"stop_name": "Hamilton McMaster University, ON",
-		"stop_location":"McMaster University at Mary Keyes and Cootes Drive",
-		"lat":43.258736,
-		"long":-79.92245
+		"stop_name": "New York W 33rd St & 11-12th Ave (DC,BAL,BOS,PHL)",
+		"stop_location":"611 W. 33rd Street, New York, NY, 10001",
+		"lat":40.755661,
+		"long":-74.00337
 	}
 ]
 ```
@@ -32,21 +32,17 @@ python run.py --extract stops --output stops.json
 
 This process is done once to get the list of all possible routes with departures from this operator.
 
-From this [page](http://ca.megabus.com/BusStops.aspx), get the list of all possible routes, i.e., all valid stop pairings.  The output should stored in `routes.json` and the schema should be something like this:
+From this [page](http://bit.ly/1mbczAX), get the list of all possible routes, i.e., all valid stop pairings.  The output should stored in `routes.json` and the schema should be something like this:
 
 ```json
 [
 	{
-		"origin": "Hamilton McMaster University, ON",
-		"destination":"Cambridge, ON",
+		"origin": "New York W 33rd St & 11-12th Ave (DC,BAL,BOS,PHL)",
+		"destination":"Boston South Station - Gate 9 NYC-Gate 10 NWK/PHL",
 	},
 	{
-		"origin": "Hamilton McMaster University, ON",
-		"destination":"Kitchener, ON",
-	},
-	{
-		"origin": "Hamilton McMaster University, ON",
-		"destination":"Waterloo, ON",
+		"origin": "New York 1st Ave Between 38th & 39th (To BOS)",
+		"destination":"Boston South Station - Gate 9 NYC-Gate 10 NWK/PHL",
 	}
 ]
 ```
@@ -62,7 +58,7 @@ python run.py --extract routes --output routes.json
 
 This process is done repeatedly to update our database of departure. As an input, this function should accept an origin, destination and a range of dates for which departures will be returned.
 
-1. Go to this [page](http://ca.megabus.com/Default.aspx)
+1. Go to this [page](http://bit.ly/1hXalGT)
 1. For each route in the list generated in step 2, get the list of all one-way departures for one passenger.
 1. For each departure extract the following information:
 
@@ -76,12 +72,12 @@ The output should be stored in `departures.json` and the schema should look some
 ```json
 [
 	{
-		"origin": "Beamsville, ON",
-		"destination": "Hamilton GO Centre, ON",
-		"departure_time": "2013-06-05T07:20:00",
-		"arrival_time": "2013-06-05T08:15:00",
-		"duration": "0:55",
-		"price": 5.00
+		"origin": "New York 1st Ave Between 38th & 39th (To BOS)",
+		"destination": "Boston South Station - Gate 9 NYC-Gate 10 NWK/PHL",
+		"departure_time": "2014-05-01T18:30:00",
+		"arrival_time": "2014-05-01T22:45:00",
+		"duration": "4:15",
+		"price": 23.00
 	}
 ]
 ```
