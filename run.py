@@ -2,6 +2,7 @@
 # -*- coding: utf-8
 import argparse
 import datetime
+from get_stops import get_stops
 
 
 def parse_date(s):
@@ -26,8 +27,10 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Crawl web site.')
     parser.add_argument('--extract', required=True, choices=['stops', 'routes', 'departures'],
                         help='the type of extraction to perform')
+    
     parser.add_argument('--output', required=True, type=argparse.FileType('w'),
                         help='the path of the output file to generate')
+    
     parser.add_argument('--startdate', required=False, type=parse_date, default=today(),
                         help='the beginning of the departure date range')
     parser.add_argument('--enddate', required=False, type=parse_date, default=today(7),
@@ -37,7 +40,7 @@ if __name__ == '__main__':
 
     if args.extract == 'stops':
         print 'Downloading stops to {}'.format(args.output)
-        """ Do something"""
+        get_stops(args.output)
 
     elif args.extract == 'routes':
         print 'Downloading routes to {}'.format(args.output)
